@@ -1,0 +1,17 @@
+COMMON: &common
+  DEBUG: False
+  SQLALCHEMY_TRACK_MODIFICATIONS: False
+
+development:
+  <<: *common
+  DEBUG: True
+
+  SQLALCHEMY_DATABASE_URI: 'mysql+pymysql://gidyla:48wrVnGAthckqj4@vereslab1.mysql.database.azure.com:3306/lab4?ssl_ca=/etc/ssl/certs/ca-certificates.crt'
+
+production:
+  <<: *common
+  SQLALCHEMY_DATABASE_URI: 'mysql+pymysql://gidyla:48wrVnGAthckqj4@vereslab1.mysql.database.azure.com:3306/lab4?ssl_ca=/etc/ssl/certs/ca-certificates.crt'
+
+ADDITIONAL_CONFIG:
+  MYSQL_ROOT_USER: gidyla
+  MYSQL_ROOT_PASSWORD: 48wrVnGAthckqj4
