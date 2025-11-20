@@ -38,10 +38,11 @@ if __name__ == '__main__':
 
     if flask_env == DEVELOPMENT:
         config['DEBUG'] = True
-        create_app(config).run(host=HOST, port=DEVELOPMENT_PORT, debug=True)
+        create_app(config, {}).run(host=HOST, port=DEVELOPMENT_PORT, debug=True)
 
     elif flask_env == PRODUCTION:
-        serve(create_app(config), host=HOST, port=PRODUCTION_PORT)
+        serve(create_app(config, {}), host=HOST, port=PRODUCTION_PORT)
 
     else:
         raise ValueError(f"Invalid FLASK_ENV value: '{flask_env}'. Must be 'development' or 'production'.")
+
