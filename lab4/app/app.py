@@ -17,7 +17,12 @@ CONFIG_PATH = "config.yaml"
 
 if __name__ == '__main__':
     # ---- REQUIRED ENV VARS ----
-    required_env_vars = ['DATABASE_HOST', 'DATABASE_NAME', 'DATABASE_USER', 'DATABASE_PASSWORD']
+    required_env_vars = [
+        'DATABASE_HOST',
+        'DATABASE_NAME',
+        'DATABASE_USER',
+        'DATABASE_PASSWORD'
+    ]
     missing_vars = [var for var in required_env_vars if not os.environ.get(var)]
 
     if missing_vars:
@@ -46,16 +51,17 @@ if __name__ == '__main__':
     config = {
         'DEBUG': os.getenv('DEBUG', 'False').lower() == 'true',
         'SQLALCHEMY_DATABASE_URI': f'mysql://{db_user}:{db_password}@{db_host}/{db_name}',
-        'SQLALCHEMY_TRACK_MODIFICATIONS': os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS', 'False').lower() == 'true'
+        'SQLALCHEMY_TRACK_MODIFICATIONS': os.getenv(
+            'SQLALCHEMY_TRACK_MODIFICATIONS',
+            'False'
+        ).lower() == 'true'
     }
 
     # ---- START APP ----
+    app = create_app(config, additional_config)
+
     if flask_env == DEVELOPMENT:
-        config['DEBUG'] = True
-        create_app(config, additional_config).run(host=HOST, port=DEVELOPMENT_PORT, debug=True)
+        app.run(host=HOST, port=DEVELOPMENT_PORT, debug=True)
 
     elif flask_env == PRODUCTION:
-        serve(create_app(config, additional_config), host=HOST, port=PRODUCTION_PORT)
-
-    else:
-        raise ValueError(f"Invalid FLASK_ENV value: '{flask_env}'. Must be 'development' or 'production'.")
+        serve(app, host=HOST, port=PRODUCTION_PORT)
