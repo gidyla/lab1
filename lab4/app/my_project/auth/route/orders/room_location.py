@@ -2,8 +2,8 @@ from http import HTTPStatus
 
 from flask import Blueprint, jsonify, Response, request, make_response
 
-from lab4.app.my_project.auth.controller import room_location_controller
-from lab4.app.my_project.auth.domain import RoomLocation
+from my_project.auth.controller import room_location_controller
+from my_project.auth.domain import RoomLocation
 
 room_location_bp = Blueprint('RoomLocation', __name__, url_prefix='/room-location')
 

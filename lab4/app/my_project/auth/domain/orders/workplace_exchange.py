@@ -1,31 +1,26 @@
-from __future__ import annotations
-from typing import Dict, Any
+# my_project/auth/domain/orders/workplace_exchange.py
 
-from lab4.app.my_project import db
-from lab4.app.my_project.auth.domain.i_dto import IDto
+from .... import db
+from sqlalchemy import Column, Integer, String
 
 
-class WorkplaceExchange(db.Model, IDto):
+class WorkplaceExchange(db.Model):
+    __tablename__ = 'workplace_exchange'
 
-    __tablename__ = "workplace_exchange"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workplace_id = Column(Integer, nullable=False)
+    exchange_service = Column(String(255), nullable=False)
+    status = Column(String(100), nullable=True)
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    exchange_service_id = db.Column(db.Integer, db.ForeignKey('exchange_service.id'), nullable=False)
-    exchange_service = db.relationship('ExchangeService', backref='workplace_exchange')
-    workplace_id = db.Column(db.Integer, db.ForeignKey('workplace.id'), nullable=False)
-    workplace = db.relationship('Workplace', backref='workplace_exchange')
+    def __init__(self, workplace_id: int, exchange_service: str, status: str = None):
+        self.workplace_id = workplace_id
+        self.exchange_service = exchange_service
+        self.status = status
 
-    def __repr__(self) -> str:
-        return f"room_location({self.id}, {self.exchange_service_id}, {self.workplace_id})"
-
-    def put_into_dto(self) -> Dict[str, Any]:
+    def to_dict(self):
         return {
             "id": self.id,
-            "exchange_service_id": self.exchange_service_id,
-            "workplace_id": self.workplace_id
+            "workplace_id": self.workplace_id,
+            "exchange_service": self.exchange_service,
+            "status": self.status
         }
-
-    @staticmethod
-    def create_from_dto(dto_dict: Dict[str, Any]) -> WorkplaceExchange:
-        obj = WorkplaceExchange(**dto_dict)
-        return obj

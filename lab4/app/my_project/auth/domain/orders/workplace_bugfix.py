@@ -1,31 +1,26 @@
-from __future__ import annotations
-from typing import Dict, Any
+# my_project/auth/domain/orders/workplace_bugfix.py
 
-from lab4.app.my_project import db
-from lab4.app.my_project.auth.domain.i_dto import IDto
+from .... import db
+from sqlalchemy import Column, Integer, String, ForeignKey
 
 
-class WorkplaceBugfix(db.Model, IDto):
+class WorkplaceBugfix(db.Model):
+    __tablename__ = 'workplace_bugfix'
 
-    __tablename__ = "workplace_bugfix"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workplace_id = Column(Integer, nullable=False)
+    description = Column(String(1024), nullable=False)
+    status = Column(String(100), nullable=True)
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    bugfix_service_id = db.Column(db.Integer, db.ForeignKey('bugfix_service.id'), nullable=False)
-    bugfix_service = db.relationship('BugfixService', backref='workplace_bugfix')
-    workplace_id = db.Column(db.Integer, db.ForeignKey('workplace.id'), nullable=False)
-    workplace = db.relationship('Workplace', backref='WorkplaceBugfix')
+    def __init__(self, workplace_id: int, description: str, status: str = None):
+        self.workplace_id = workplace_id
+        self.description = description
+        self.status = status
 
-    def __repr__(self) -> str:
-        return f"room_location({self.id}, {self.bugfix_service_id}, {self.workplace_id})"
-
-    def put_into_dto(self) -> Dict[str, Any]:
+    def to_dict(self):
         return {
             "id": self.id,
-            "bugfix_service_id": self.bugfix_service_id,
-            "workplace_id": self.workplace_id
+            "workplace_id": self.workplace_id,
+            "description": self.description,
+            "status": self.status
         }
-
-    @staticmethod
-    def create_from_dto(dto_dict: Dict[str, Any]) -> WorkplaceBugfix:
-        obj = WorkplaceBugfix(**dto_dict)
-        return obj

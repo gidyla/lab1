@@ -2,8 +2,8 @@ from http import HTTPStatus
 
 from flask import Blueprint, jsonify, Response, request, make_response
 
-from lab4.app.my_project.auth.controller import workplace_give_controller
-from lab4.app.my_project.auth.domain import WorkplaceGive
+from my_project.auth.controller import workplace_give_controller
+from my_project.auth.domain import WorkplaceGive
 
 workplace_give_bp = Blueprint('WorkplaceGive', __name__, url_prefix='/workplace-give')
 

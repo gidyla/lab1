@@ -2,8 +2,8 @@ from http import HTTPStatus
 
 from flask import Blueprint, jsonify, Response, request, make_response
 
-from lab4.app.my_project.auth.controller import give_service_controller
-from lab4.app.my_project.auth.domain import GiveService
+from my_project.auth.controller import give_service_controller
+from my_project.auth.domain import GiveService
 
 give_service_bp = Blueprint('GiveService', __name__, url_prefix='/give-service')
 

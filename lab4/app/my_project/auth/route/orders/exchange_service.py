@@ -2,8 +2,8 @@ from http import HTTPStatus
 
 from flask import Blueprint, jsonify, Response, request, make_response
 
-from lab4.app.my_project.auth.controller import exchange_service_controller
-from lab4.app.my_project.auth.domain import ExchangeService
+from my_project.auth.controller import exchange_service_controller
+from my_project.auth.domain import ExchangeService
 
 exchange_service_bp = Blueprint('ExchangeService', __name__, url_prefix='/exchange-service')
 

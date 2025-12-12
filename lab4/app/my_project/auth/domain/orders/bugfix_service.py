@@ -1,34 +1,23 @@
-from __future__ import annotations
-from typing import Dict, Any
+# my_project/auth/domain/orders/bugfix_service.py
 
-from lab4.app.my_project import db
-from lab4.app.my_project.auth.domain.i_dto import IDto
+from .... import db
+from sqlalchemy import Column, Integer, String
 
 
-class BugfixService(db.Model, IDto):
+class BugfixService(db.Model):
+    __tablename__ = 'bugfix_service'
 
-    __tablename__ = "bugfix_service"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String(255), nullable=False)
+    description = Column(String(1024), nullable=True)
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    describtion = db.Column(db.String(45), nullable=False)
-    service_time = db.Column(db.Date, nullable=False)
-    device_condition = db.Column(db.String(45), nullable=False)
-    device_type_id = db.Column(db.Integer, db.ForeignKey('device_type.id'), nullable=False)
-    device_type = db.relationship('DeviceType', backref='bugfix_services')
+    def __init__(self, title: str, description: str = None):
+        self.title = title
+        self.description = description
 
-    def __repr__(self) -> str:
-        return f"room_location({self.id}, '{self.describtion}', '{self.service_time}', '{self.device_condition}', {self.device_type_id})"
-
-    def put_into_dto(self) -> Dict[str, Any]:
+    def to_dict(self):
         return {
             "id": self.id,
-            "describtion": self.describtion,
-            "service_time": self.service_time,
-            "device_condition": self.device_condition,
-            "device_type_id": self.device_type_id
+            "title": self.title,
+            "description": self.description
         }
-
-    @staticmethod
-    def create_from_dto(dto_dict: Dict[str, Any]) -> BugfixService:
-        obj = BugfixService(**dto_dict)
-        return obj

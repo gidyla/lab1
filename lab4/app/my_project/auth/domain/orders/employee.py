@@ -1,29 +1,26 @@
-from __future__ import annotations
-from typing import Dict, Any
+# my_project/auth/domain/orders/employee.py
 
-from lab4.app.my_project import db
-from lab4.app.my_project.auth.domain.i_dto import IDto
+from .... import db
+from sqlalchemy import Column, Integer, String
 
 
-class Employee(db.Model, IDto):
+class Employee(db.Model):
+    __tablename__ = 'employee'
 
-    __tablename__ = "employee"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    first_name = Column(String(255), nullable=False)
+    last_name = Column(String(255), nullable=False)
+    position = Column(String(255), nullable=True)
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    name = db.Column(db.String(45), nullable=False)
-    surname = db.Column(db.String(45), nullable=False)
+    def __init__(self, first_name: str, last_name: str, position: str = None):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.position = position
 
-    def __repr__(self) -> str:
-        return f"room_location({self.id}, '{self.name}', '{self.surname}')"
-
-    def put_into_dto(self) -> Dict[str, Any]:
+    def to_dict(self):
         return {
             "id": self.id,
-            "name": self.name,
-            "surname": self.surname
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "position": self.position
         }
-
-    @staticmethod
-    def create_from_dto(dto_dict: Dict[str, Any]) -> Employee:
-        obj = Employee(**dto_dict)
-        return obj

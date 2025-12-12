@@ -1,29 +1,23 @@
-from __future__ import annotations
-from typing import Dict, Any
+# my_project/auth/domain/orders/room_location.py
 
-from lab4.app.my_project import db
-from lab4.app.my_project.auth.domain.i_dto import IDto
+from .... import db
+from sqlalchemy import Column, Integer, String
 
 
-class RoomLocation(db.Model, IDto):
+class RoomLocation(db.Model):
+    __tablename__ = 'room_location'
 
-    __tablename__ = "room_location"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    room_number = Column(String(100), nullable=False)
+    floor = Column(Integer, nullable=True)
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    room = db.Column(db.String(45), nullable=False)
-    desk = db.Column(db.String(45), nullable=False)
+    def __init__(self, room_number: str, floor: int = None):
+        self.room_number = room_number
+        self.floor = floor
 
-    def __repr__(self) -> str:
-        return f"room_location({self.id}, '{self.room}', '{self.desk}')"
-
-    def put_into_dto(self) -> Dict[str, Any]:
+    def to_dict(self):
         return {
             "id": self.id,
-            "room": self.room,
-            "desk": self.desk
+            "room_number": self.room_number,
+            "floor": self.floor
         }
-
-    @staticmethod
-    def create_from_dto(dto_dict: Dict[str, Any]) -> RoomLocation:
-        obj = RoomLocation(**dto_dict)
-        return obj

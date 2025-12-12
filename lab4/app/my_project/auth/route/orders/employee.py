@@ -2,8 +2,8 @@ from http import HTTPStatus
 
 from flask import Blueprint, jsonify, Response, request, make_response
 
-from lab4.app.my_project.auth.controller import employee_controller
-from lab4.app.my_project.auth.domain import Employee
+from my_project.auth.controller import employee_controller
+from my_project.auth.domain import Employee
 
 employee_bp = Blueprint('Employee', __name__, url_prefix='/employee')
 

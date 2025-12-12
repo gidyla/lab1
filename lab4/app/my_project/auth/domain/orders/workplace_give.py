@@ -1,31 +1,26 @@
-from __future__ import annotations
-from typing import Dict, Any
+# my_project/auth/domain/orders/workplace_give.py
 
-from lab4.app.my_project import db
-from lab4.app.my_project.auth.domain.i_dto import IDto
+from .... import db
+from sqlalchemy import Column, Integer, String
 
 
-class WorkplaceGive(db.Model, IDto):
+class WorkplaceGive(db.Model):
+    __tablename__ = 'workplace_give'
 
-    __tablename__ = "workplace_give"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    workplace_id = Column(Integer, nullable=False)
+    give_service = Column(String(255), nullable=False)
+    status = Column(String(100), nullable=True)
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    give_service_id = db.Column(db.Integer, db.ForeignKey('give_service.id'), nullable=False)
-    give_service = db.relationship('GiveService', backref='workplace_give')
-    workplace_id = db.Column(db.Integer, db.ForeignKey('workplace.id'), nullable=False)
-    workplace = db.relationship('Workplace', backref='workplace_give')
+    def __init__(self, workplace_id: int, give_service: str, status: str = None):
+        self.workplace_id = workplace_id
+        self.give_service = give_service
+        self.status = status
 
-    def __repr__(self) -> str:
-        return f"room_location({self.id}, {self.give_service_id}, {self.workplace_id})"
-
-    def put_into_dto(self) -> Dict[str, Any]:
+    def to_dict(self):
         return {
             "id": self.id,
-            "give_service_id": self.give_service_id,
-            "workplace_id": self.workplace_id
+            "workplace_id": self.workplace_id,
+            "give_service": self.give_service,
+            "status": self.status
         }
-
-    @staticmethod
-    def create_from_dto(dto_dict: Dict[str, Any]) -> WorkplaceGive:
-        obj = WorkplaceGive(**dto_dict)
-        return obj

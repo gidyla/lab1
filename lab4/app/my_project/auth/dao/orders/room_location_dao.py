@@ -1,6 +1,44 @@
-from lab4.app.my_project.auth.dao.general_dao import GeneralDAO
-from lab4.app.my_project.auth.domain import RoomLocation
+# my_project/auth/dao/orders/room_location_dao.py
+
+from ..general_dao import GeneralDAO
+from .... import db
+from ...domain.orders.room_location import RoomLocation
 
 
 class RoomLocationDAO(GeneralDAO):
-    _domain_type = RoomLocation
+    model = RoomLocation
+
+    @classmethod
+    def get_all(cls):
+        return [item.to_dict() for item in cls.model.query.all()]
+
+    @classmethod
+    def get_by_id(cls, item_id: int):
+        item = cls.model.query.get(item_id)
+        return item.to_dict() if item else None
+
+    @classmethod
+    def create(cls, data: dict):
+        item = cls.model(**data)
+        db.session.add(item)
+        db.session.commit()
+        return item.to_dict()
+
+    @classmethod
+    def update(cls, item_id: int, data: dict):
+        item = cls.model.query.get(item_id)
+        if not item:
+            return None
+        for key, value in data.items():
+            setattr(item, key, value)
+        db.session.commit()
+        return item.to_dict()
+
+    @classmethod
+    def delete(cls, item_id: int):
+        item = cls.model.query.get(item_id)
+        if not item:
+            return False
+        db.session.delete(item)
+        db.session.commit()
+        return True

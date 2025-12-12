@@ -2,8 +2,8 @@ from http import HTTPStatus
 
 from flask import Blueprint, jsonify, Response, request, make_response
 
-from lab4.app.my_project.auth.controller import device_type_controller
-from lab4.app.my_project.auth.domain import DeviceType
+from my_project.auth.controller import device_type_controller
+from my_project.auth.domain import DeviceType
 
 device_type_bp = Blueprint('DeviceType', __name__, url_prefix='/device-type')
 

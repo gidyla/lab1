@@ -2,8 +2,8 @@ from http import HTTPStatus
 
 from flask import Blueprint, jsonify, Response, request, make_response
 
-from lab4.app.my_project.auth.controller import update_service_controller
-from lab4.app.my_project.auth.domain import UpdateService
+from my_project.auth.controller import update_service_controller
+from my_project.auth.domain import UpdateService
 
 update_service_bp = Blueprint('UpdateService', __name__, url_prefix='/update-service')
 

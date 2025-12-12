@@ -2,8 +2,8 @@ from http import HTTPStatus
 
 from flask import Blueprint, jsonify, Response, request, make_response
 
-from lab4.app.my_project.auth.controller import workplace_bugfix_controller
-from lab4.app.my_project.auth.domain import WorkplaceBugfix
+from my_project.auth.controller import workplace_bugfix_controller
+from my_project.auth.domain import WorkplaceBugfix
 
 workplace_bugfix_bp = Blueprint('WorkplaceBugfix', __name__, url_prefix='/workplace-bugfix')
 

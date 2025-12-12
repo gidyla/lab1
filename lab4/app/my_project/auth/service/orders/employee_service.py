@@ -1,7 +1,25 @@
-from lab4.app.my_project.auth.dao import employee_dao
-from lab4.app.my_project.auth.service.general_service import GeneralService
+from ...dao import employee_dao
 
 
-class EmployeeService(GeneralService):
+class EmployeeService:
 
-    _dao = employee_dao
+    @staticmethod
+    def get_all():
+        return employee_dao.get_all()
+
+    @staticmethod
+    def get_by_id(item_id: int):
+        return employee_dao.get_by_id(item_id)
+
+    @staticmethod
+    def create(data: dict):
+        return employee_dao.create(data)
+
+    @staticmethod
+    def update(item_id: int, data: dict):
+        return employee_dao.update(item_id, data)
+
+    @staticmethod
+    def delete(item_id: int):
+        return employee_dao.delete(item_id)
+
